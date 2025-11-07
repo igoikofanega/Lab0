@@ -1,6 +1,4 @@
-def main():
-    print("Hello from lab0!")
-
+from src.cli import cli
 
 if __name__ == "__main__":
-    main()
+    cli()
