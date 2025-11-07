@@ -1,0 +1,19 @@
+[project]
+name = "lab0"
+version = "0.1.0"
+description = "Fundamentals of Continuous Integration"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "black>=25.9.0",
+    "click>=8.3.0",
+    "pylint>=4.0.2",
+    "pytest>=8.4.2",
+    "pytest-cov>=7.0.0",
+]
+[tool.uv]
+dev-dependencies = []
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
