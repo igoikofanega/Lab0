@@ -14,12 +14,34 @@ import re
 
 def remove_missing(values: List[Any]) -> List[Any]:
     """Remove missing values: None, '', float('nan'), 'none'"""
-    return [v for v in values if v is not None and v != '' and str(v).lower() != 'nan' and str(v).lower() != 'none']
+    # CORREGIDO: Bucle for en lugar de list comprehension larga
+    result = []
+    for v in values:
+        if (
+            v is not None
+            and v != ""
+            and str(v).lower() != "nan"
+            and str(v).lower() != "none"
+        ):
+            result.append(v)
+    return result
 
 
 def fill_missing(values: List[Any], fill_value: Any = 0) -> List[Any]:
     """Replace missing values with fill_value"""
-    return [fill_value if v is None or v == '' or str(v).lower() == 'nan' or str(v).lower() == 'none' else v for v in values]
+    # CORREGIDO: Bucle for en lugar de list comprehension larga
+    result = []
+    for v in values:
+        if (
+            v is None
+            or v == ""
+            or str(v).lower() == "nan"
+            or str(v).lower() == "none"
+        ):
+            result.append(fill_value)
+        else:
+            result.append(v)
+    return result
 
 
 def remove_duplicates(values: List[Any]) -> List[Any]:
