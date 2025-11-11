@@ -1,3 +1,11 @@
+"""
+Data preprocessing utilities:
+- Cleaning: missing, duplicates
+- Numeric: normalize, standardize, clip
+- Text: tokenize, clean, stopwords
+- Structure: flatten, shuffle
+"""
+
 import math
 import random
 from typing import List, Any
