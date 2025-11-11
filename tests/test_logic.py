@@ -42,7 +42,9 @@ def test_normalize(sample_numbers):
 
 def test_standardize(sample_numbers):
     result = standardize(sample_numbers)
-    expected = [(x - 3.0) / 2.0 for x in sample_numbers]  # mean=3, std=2
+    # La media es 3.0, la desviación estándar de la población es sqrt(2.0)
+    std_dev = math.sqrt(2.0) 
+    expected = [(x - 3.0) / std_dev for x in sample_numbers]
     assert [round(r, 6) for r in result] == [round(e, 6) for e in expected]
 
 def test_clip(sample_numbers):

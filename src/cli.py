@@ -6,10 +6,19 @@ Groups: clean, numeric, text, struct.
 import click
 import ast
 from .preprocessing import (
-    remove_missing, fill_missing, remove_duplicates,
-    normalize, standardize, clip, to_integers, log_transform,
-    tokenize, remove_punctuation, remove_stopwords,
-    flatten, shuffle
+    remove_missing,
+    fill_missing,
+    remove_duplicates,
+    normalize,
+    standardize,
+    clip,
+    to_integers,
+    log_transform,
+    tokenize,
+    remove_punctuation,
+    remove_stopwords,
+    flatten,
+    shuffle,
 )
 
 
@@ -20,20 +29,22 @@ def cli() -> None:
 
 
 # === CLEAN GROUP ===
-clean = click.Group('clean', help='Data cleaning operations')
+clean = click.Group("clean", help="Data cleaning operations")
 
 
-@clean.command('remove-missing', help='Remove missing values (None, "", "nan")')
-@click.argument('values', nargs=-1)
+@clean.command("remove-missing", help='Remove missing values (None, "", "nan")')
+@click.argument("values", nargs=-1)
 def remove_missing_cmd(values: tuple) -> None:
     """Example: cli clean remove-missing 1 None "" nan 2"""
     result = remove_missing(list(values))
     click.echo(result)
 
 
-@clean.command('fill-missing', help='Fill missing values with a specified value')
-@click.argument('values', nargs=-1)
-@click.option('--fill-value', default=0, help='Value to replace missing data', type=float)
+@clean.command("fill-missing", help="Fill missing values with a specified value")
+@click.argument("values", nargs=-1)
+@click.option(
+    "--fill-value", default=0, help="Value to replace missing data", type=float
+)
 def fill_missing_cmd(values: tuple, fill_value: float) -> None:
     """Example: cli clean fill-missing 1 None 3 --fill-value 999"""
     result = fill_missing(list(values), fill_value)
@@ -44,43 +55,43 @@ cli.add_command(clean)
 
 
 # === NUMERIC GROUP ===
-numeric = click.Group('numeric', help='Numeric data operations')
+numeric = click.Group("numeric", help="Numeric data operations")
 
 
-@numeric.command('normalize', help='Min-max normalization')
-@click.argument('values', nargs=-1, type=float)
-@click.option('--new-min', default=0.0, help='New minimum value')
-@click.option('--new-max', default=1.0, help='New maximum value')
+@numeric.command("normalize", help="Min-max normalization")
+@click.argument("values", nargs=-1, type=float)
+@click.option("--new-min", default=0.0, help="New minimum value")
+@click.option("--new-max", default=1.0, help="New maximum value")
 def normalize_cmd(values: tuple, new_min: float, new_max: float) -> None:
     result = normalize(list(values), new_min, new_max)
     click.echo(result)
 
 
-@numeric.command('standardize', help='Z-score standardization')
-@click.argument('values', nargs=-1, type=float)
+@numeric.command("standardize", help="Z-score standardization")
+@click.argument("values", nargs=-1, type=float)
 def standardize_cmd(values: tuple) -> None:
     result = standardize(list(values))
     click.echo(result)
 
 
-@numeric.command('clip', help='Clip values to a range')
-@click.argument('values', nargs=-1, type=float)
-@click.option('--min', 'min_val', default=0.0, help='Minimum value to clip')
-@click.option('--max', 'max_val', default=1.0, help='Maximum value to clip')
+@numeric.command("clip", help="Clip values to a range")
+@click.argument("values", nargs=-1, type=float)
+@click.option("--min", "min_val", default=0.0, help="Minimum value to clip")
+@click.option("--max", "max_val", default=1.0, help="Maximum value to clip")
 def clip_cmd(values: tuple, min_val: float, max_val: float) -> None:
     result = clip(list(values), min_val, max_val)
     click.echo(result)
 
 
-@numeric.command('to-integers', help='Convert string numbers to integers')
-@click.argument('values', nargs=-1)
+@numeric.command("to-integers", help="Convert string numbers to integers")
+@click.argument("values", nargs=-1)
 def to_integers_cmd(values: tuple) -> None:
     result = to_integers(list(values))
     click.echo(result)
 
 
-@numeric.command('log-transform', help='Apply log to positive values')
-@click.argument('values', nargs=-1, type=float)
+@numeric.command("log-transform", help="Apply log to positive values")
+@click.argument("values", nargs=-1, type=float)
 def log_transform_cmd(values: tuple) -> None:
     result = log_transform(list(values))
     click.echo(result)
@@ -90,26 +101,30 @@ cli.add_command(numeric)
 
 
 # === TEXT GROUP ===
-text_group = click.Group('text', help='Text processing operations')  # Renombrado para evitar conflicto
+text_group = click.Group(
+    "text", help="Text processing operations"
+)  # Renombrado para evitar conflicto
 
 
-@text_group.command('tokenize', help='Tokenize text (alphanumeric, lowercase)')
-@click.argument('text', type=str)
+@text_group.command("tokenize", help="Tokenize text (alphanumeric, lowercase)")
+@click.argument("text", type=str)
 def tokenize_cmd(text: str) -> None:
     result = tokenize(text)
     click.echo(result)
 
 
-@text_group.command('remove-punctuation', help='Remove punctuation, keep alphanumerics and spaces')
-@click.argument('text', type=str)
+@text_group.command(
+    "remove-punctuation", help="Remove punctuation, keep alphanumerics and spaces"
+)
+@click.argument("text", type=str)
 def remove_punctuation_cmd(text: str) -> None:
     result = remove_punctuation(text)
     click.echo(result)
 
 
-@text_group.command('remove-stopwords', help='Remove stopwords (case insensitive)')
-@click.argument('text', type=str)
-@click.option('--stopwords', multiple=True, default=[], help='Stopwords to remove')
+@text_group.command("remove-stopwords", help="Remove stopwords (case insensitive)")
+@click.argument("text", type=str)
+@click.option("--stopwords", multiple=True, default=[], help="Stopwords to remove")
 def remove_stopwords_cmd(text: str, stopwords: tuple) -> None:
     result = remove_stopwords(text, list(stopwords))
     click.echo(result)
@@ -119,31 +134,35 @@ cli.add_command(text_group)
 
 
 # === STRUCT GROUP ===
-struct = click.Group('struct', help='Data structure operations')
+struct = click.Group("struct", help="Data structure operations")
 
 
-@struct.command('shuffle', help='Shuffle list with optional seed')
-@click.argument('values', nargs=-1)
-@click.option('--seed', type=int, default=None, help='Random seed for reproducibility')
+@struct.command("shuffle", help="Shuffle list with optional seed")
+@click.argument("values", nargs=-1)
+@click.option("--seed", type=int, default=None, help="Random seed for reproducibility")
 def shuffle_cmd(values: tuple, seed: int | None) -> None:
     result = shuffle(list(values), seed)
     click.echo(result)
 
 
-@struct.command('flatten', help='Flatten a list of lists')
-@click.argument('values', nargs=-1)
+@struct.command("flatten", help="Flatten a list of lists")
+@click.argument("values", nargs=-1)
 def flatten_cmd(values: tuple) -> None:
     """Example: cli struct flatten "[1,2]" "[3,4]" """
     try:
-        list_of_lists = [ast.literal_eval(v) for v in values if isinstance(v, str) and v.startswith('[')]
+        list_of_lists = [
+            ast.literal_eval(v)
+            for v in values
+            if isinstance(v, str) and v.startswith("[")
+        ]
         result = flatten(list_of_lists)
     except Exception:  # pylint: disable=broad-except
         result = []
     click.echo(result)
 
 
-@struct.command('unique', help='Remove duplicate values (preserve order)')
-@click.argument('values', nargs=-1)
+@struct.command("unique", help="Remove duplicate values (preserve order)")
+@click.argument("values", nargs=-1)
 def unique_cmd(values: tuple) -> None:
     result = remove_duplicates(list(values))
     click.echo(result)
@@ -152,5 +171,5 @@ def unique_cmd(values: tuple) -> None:
 cli.add_command(struct)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     cli()

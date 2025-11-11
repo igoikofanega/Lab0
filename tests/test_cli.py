@@ -15,7 +15,8 @@ def test_cli_clean_remove_missing(runner):
 def test_cli_clean_fill_missing(runner):
     result = runner.invoke(cli, ['clean', 'fill-missing', '1', 'None', '3', '--fill-value', '999'])
     assert result.exit_code == 0
-    assert "['1', '999', '3']" in result.output or "[1, 999, 3]" in result.output
+    # Comprobamos que la salida contenga el float 999.0
+    assert "['1', 999.0, '3']" in result.output
 
 def test_cli_numeric_normalize(runner):
     result = runner.invoke(cli, ['numeric', 'normalize', '0', '5', '10', '--new-min', '0', '--new-max', '1'])
