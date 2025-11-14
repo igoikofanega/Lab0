@@ -13,8 +13,15 @@ import re
 
 
 def remove_missing(values: List[Any]) -> List[Any]:
-    """Remove missing values: None, '', float('nan'), 'none'"""
-    # CORREGIDO: Bucle for en lugar de list comprehension larga
+    """
+    Removes missing values (None, '', 'nan or 'none') from a list of values.
+
+    Args:
+        data: List of values, potentially including missing ones.
+
+    Returns:
+        List of values without missing ones.
+    """
     result = []
     for v in values:
         if (
@@ -28,8 +35,16 @@ def remove_missing(values: List[Any]) -> List[Any]:
 
 
 def fill_missing(values: List[Any], fill_value: Any = 0) -> List[Any]:
-    """Replace missing values with fill_value"""
-    # CORREGIDO: Bucle for en lugar de list comprehension larga
+    """
+    Replaces missing values (None, '', 'nan or 'none') with a specified fill value.
+
+    Args:
+        data: List of values, potentially including missing ones.
+        fill_value: The value to use for replacement (default is 0).
+
+    Returns:
+        List of values with missing ones replaced.
+    """
     result = []
     for v in values:
         if (
@@ -45,7 +60,15 @@ def fill_missing(values: List[Any], fill_value: Any = 0) -> List[Any]:
 
 
 def remove_duplicates(values: List[Any]) -> List[Any]:
-    """Return unique values preserving order"""
+    """
+    Removes duplicated values from a list, preserving order of first appearance.
+
+    Args:
+        data: List of values.
+
+    Returns:
+        List of unique values.
+    """
     seen = set()
     return [x for x in values if not (x in seen or seen.add(x))]
 
@@ -53,7 +76,17 @@ def remove_duplicates(values: List[Any]) -> List[Any]:
 def normalize(
     values: List[float], new_min: float = 0.0, new_max: float = 1.0
 ) -> List[float]:
-    """Min-max normalization"""
+    """
+    Normalizes numerical values using the Min-Max method.
+
+    Args:
+        data: List of numerical values.
+        new_min: The minimum value of the new range (by default is 0.0).
+        new_max: The maximum value of the new range (by default is 1.0).
+
+    Returns:
+        List of normalized values (float).
+    """
     if not values:
         return []
     v_min, v_max = min(values), max(values)
@@ -65,7 +98,15 @@ def normalize(
 
 
 def standardize(values: List[float]) -> List[float]:
-    """Z-score standardization"""
+    """
+    Standardizes numerical values using the Z-score method.
+
+    Args:
+        data: List of numerical values.
+
+    Returns:
+        List of standardized values (float).
+    """
     if not values:
         return []
     mean = sum(values) / len(values)
@@ -76,12 +117,31 @@ def standardize(values: List[float]) -> List[float]:
 
 
 def clip(values: List[float], min_val: float, max_val: float) -> List[float]:
-    """Clip values to [min_val, max_val]"""
+    """
+    Clips numerical values to a specified minimum and maximum range.
+
+    Args:
+        data: List of numerical values.
+        min_clip: Minimum value to clip to.
+        max_clip: Maximum value to clip to.
+
+    Returns:
+        List of clipped values.
+    """
     return [max(min_val, min(v, max_val)) for v in values]
 
 
 def to_integers(str_list: List[str]) -> List[int]:
-    """Convert string numbers to int, skip non-numeric"""
+    """
+    Converts elements in a list of strings to integers, excluding non-numerical
+    and incomplete numerical strings.
+
+    Args:
+        data: List of strings (can include numerical and non-numerical values).
+
+    Returns:
+        List of values converted to integers (non-numerical values are excluded).
+    """
     result = []
     for s in str_list:
         try:
@@ -92,33 +152,84 @@ def to_integers(str_list: List[str]) -> List[int]:
 
 
 def log_transform(values: List[float]) -> List[float]:
-    """Apply log to positive values only"""
+    """
+    Applies a logarithmic scale transformation (natural log, ln) to a list of values.
+    Only positive numbers are transformed (log(x) for x > 0).
+
+    Args:
+        data: List of numerical values.
+
+    Returns:
+        List of values converted to logarithmic scale.
+    """
     return [math.log(v) for v in values if v > 0]
 
 
 def tokenize(text: str) -> List[str]:
-    """Tokenize, keep alphanumeric, lowercase"""
+    """
+    Tokenizes text into words, keeping only alphanumeric characters and lower-casing words.
+
+    Args:
+        text: Text.
+
+    Returns:
+        Processed text (string).
+    """
     return [word.lower() for word in re.findall(r"\w+", text)]
 
 
 def remove_punctuation(text: str) -> str:
-    """Keep only alphanumerics and spaces"""
+    """
+    Processes text by selecting only alphanumeric characters and spaces (removes punctuation).
+
+    Args:
+        text: Text to be processed.
+
+    Returns:
+        Processed text (string).
+    """
     return re.sub(r"[^a-zA-Z0-9\s]", " ", text)
 
 
 def remove_stopwords(text: str, stopwords: List[str]) -> str:
-    """Remove stopwords (case insensitive)"""
+    """
+    Remove stopwords from the input text in a case-insensitive manner.
+    
+    Args:
+        text (str): The input text to process.
+        stopwords (List[str]): List of stopwords to remove.
+    
+    Returns:
+        str: Text with stopwords removed, preserving original word order.
+    """
     words = text.lower().split()
     return " ".join([w for w in words if w not in stopwords])
 
 
 def flatten(list_of_lists: List[List[Any]]) -> List[Any]:
-    """Flatten one level"""
+    """
+    Flatten a list of lists by one level.
+    
+    Args:
+        list_of_lists (List[List[Any]]): A list containing sublists to flatten.
+    
+    Returns:
+        List[Any]: A single list containing all elements from the sublists.
+    """
     return [item for sublist in list_of_lists for item in sublist]
 
 
 def shuffle(values: List[Any], seed: int = None) -> List[Any]:
-    """Shuffle list with optional seed"""
+    """
+    Shuffle a list in-place and return the shuffled copy. Optionally use a seed for reproducibility.
+    
+    Args:
+        values (List[Any]): The list to shuffle.
+        seed (int, optional): Random seed for reproducible shuffling. Defaults to None.
+    
+    Returns:
+        List[Any]: A new shuffled list (original list remains unchanged).
+    """
     result = values[:]
     if seed is not None:
         random.seed(seed)
